@@ -1,0 +1,31 @@
+#:kivy 1.9.1
+
+<FoosGame>:
+  Canvas:
+    Rectangle:
+      pos:  self.center_x - 5, 0
+      size: 10, self.height
+
+  Label: 
+    font_size: 50
+    center_x:  root.width / 4
+    top:       root.top - 30
+    text:      "Blue Team"
+
+  Label:
+    font_size: 50 
+    center_x: root.width * 3 / 4
+    top:      root.top - 30
+    text:     "White Team"
+
+  Label:
+    font_size: 70
+    center_x:  root.width / 4
+    top:       root.top - 50
+    text:      str(root.team2.score)
+
+  Label:
+    font_size: 70
+    center_x:  root.width * 3 / 4
+    top:       root.top - 50
+    text:      str(root.team1.score)
