@@ -7,11 +7,12 @@ from kivy.clock import Clock
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(23, GPIO.IN)
-score = NumericProperty(0)
-team1 = ObjectProperty(None)
-team2 = ObjectProperty(None)
 
 class FoosGame(Widget):
+    score = NumericProperty(0)
+    team1 = ObjectProperty(None)
+    team2 = ObjectProperty(None)
+
     def update(self, dt):
         try:
             time.sleep(2)
