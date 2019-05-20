@@ -6,6 +6,42 @@ from kivy.uix.image import Image
 from kivy.properties import NumericProperty, ObjectProperty, StringProperty
 from kivy.clock import Clock
 import random, os, time
+import sqlite3
+
+# To get kivy to play video streams, look at
+# github.com/atuldo/videoStream/blob/master/videoStream.py
+# The address will be http://localhost:8082
+
+class SQL:
+    def __init__(self, fileName='foos.db'):
+	self.conn = sqlite3.connect(fileName)
+	self.c = self.conn.cursor()
+
+        self.c.execute("DROP TABLE IF EXISTS Scores")
+        self.c.execute("CREATE TABLE Scores (team TEXT, scoreINTEGER)")
+	self.c.execute("INSERT INTO Scores VALUES ('White', 0), ('Blue', 0)")
+	self.c.execute("CREATE TABLE IF NOT EXISTS History (blueScore INTEGER, \
+	    whiteScore INTEGER, winner TEXT, datetime DATETIME)")
+    
+    def whiteScore(self):
+        print("WhiteScore")
+        statement = "UPDATE Scores SET score = score + 1 WHERE team = 'White'"
+        print(statement)
+        self.c.execute(statement)
+        self.conn.commit()
+
+    def blueScore():
+        statement = "UPDATE Scores SET score = score + 1 WHERE team = 'Blue'"
+        c.execute(statement)
+        conn.commit()
+
+    def gameOver():
+        c.execute("INSERT INTO History VALUES ((SELECT score FROM Scores \
+                WHERE team = 'Blue'), (SELECT score FROM Scores WHERE team = \
+                'White'), (SELECT team FROM Scores WHERE score = (SELECT \
+                max(score) FROM Scores)), datetime('now', 'localtime'))")
+        conn.commit()
+        conn.close()
 
 class Team(Widget):
     score = NumericProperty(0)
@@ -15,6 +51,7 @@ class FoosGame(Widget):
     team2 = ObjectProperty(None)
     winningTeam = StringProperty()
     img = Image()
+    sql = SQL('foos.db')
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(23, GPIO.IN)
@@ -31,6 +68,8 @@ class FoosGame(Widget):
         try:
             if GPIO.input(23):
                 self.team1.score += 1
+                sql.whiteScore()
+                #sql.increment("White")
                 print("Team White scored.")
                 #self.img.disabled = False
                 #self.img.source = './pic/Mario-Balotelli-Playing-Foosball.jpg'
@@ -40,8 +79,12 @@ class FoosGame(Widget):
 
             if GPIO.input(22):
                 self.team2.score += 1
+                #sql.increment("Blue")
                 print("Team Blue scored.")
                 time.sleep(5)
+
+            if self.team1.score >= 10 or self.team2.score >= 10:
+                sql.gameOver
 
             if self.team1.score >= 10:
                 print("team 1 wins")
