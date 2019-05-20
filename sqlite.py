@@ -11,9 +11,7 @@ c.execute("DROP TABLE IF EXISTS Scores")
 c.execute('''CREATE TABLE Scores (team TEXT, score INTEGER)''')
 
 # Insert beginning scores
-#c.execute("INSERT INTO Scores VALUES ('White', 0), ('Blue', 0)")
-c.execute("INSERT INTO Scores VALUES ('Blue', 0)")
-c.execute("INSERT INTO Scores VALUES ('White', 0)")
+c.execute("INSERT INTO Scores VALUES ('White', 0), ('Blue', 0)")
 
 # Select
 for row in c.execute('SELECT * FROM Scores ORDER BY team'):
