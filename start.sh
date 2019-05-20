@@ -1,10 +1,10 @@
 #!/bin/bash
 
 function function_exit() {
-  kill -9 `ps aux | awk '/video.sh/ {print $2}'`
+  kill -9 `ps aux | awk '/stream.sh/ {print $2}'`
 }
 trap function_exit EXIT
 
-./video.sh &>/dev/null &
+./stream.sh &>/dev/null &
 
 python ./main.py
