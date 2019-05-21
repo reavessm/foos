@@ -1,7 +1,7 @@
 import cv2
 import time
 
-cv2.namedWindow("preview")
+cv2.namedWindow("Replay, by Iyaz")
 vc = cv2.VideoCapture("http://localhost:8082")
 
 if vc.isOpened():
@@ -12,7 +12,7 @@ else:
 counter = 0
 
 while rval:
-    cv2.imshow("preview", frame)
+    cv2.imshow("Replay, by Iyaz", frame)
     rval, frame = vc.read()
     key = cv2.waitKey(20)
     time.sleep(0.2)
@@ -23,4 +23,6 @@ while rval:
         print(counter)
     if key == 27: # Esc
         break
-cv2.destroyWindow("preview")
+
+vc.release()
+cv2.destroyWindow("Replay, by Iyaz")
